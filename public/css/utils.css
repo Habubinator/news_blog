@@ -1,0 +1,25 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+header div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+header {
+    height: 90px;
+    position: sticky;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    width: auto;
+    padding: 0 200px 0 200px;
+}
+
+#tags {
+    justify-content: space-between;
+    width: 400px;
+}
