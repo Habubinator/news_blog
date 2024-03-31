@@ -56,5 +56,8 @@ footer {
     background-color: #90ae85;
     height: 65px;
     padding-top: 50px;
-    padding-left: 10%;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
 }
