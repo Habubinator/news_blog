@@ -1,6 +1,13 @@
 * {
     padding: 0;
     margin: 0;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+/*https://www.color-hex.com/color-palette/104649*/
+
+body {
+    background-color: #fffef9;
 }
 
 header div {
@@ -22,4 +29,32 @@ header {
 #tags {
     justify-content: space-between;
     width: 400px;
+}
+
+#tags div {
+    background-color: #dadbb5;
+    border-radius: 24px;
+    width: 100px;
+    padding: 2px;
+    height: 30px;
+    color: black;
+}
+
+header div input[type="button"] {
+    border-radius: 24px;
+    width: 150px;
+    margin-left: 10px;
+    padding: 2px;
+    height: 30px;
+    border: none;
+    background-color: #dadbb5;
+}
+
+footer {
+    margin-top: 50px;
+    color: black;
+    background-color: #90ae85;
+    height: 65px;
+    padding-top: 50px;
+    padding-left: 10%;
 }
