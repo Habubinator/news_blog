@@ -1,0 +1,68 @@
+body {
+    background-color: #fffef9;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    padding: 2% 5%;
+    background-color: #90ae85;
+}
+
+#mainBodySection {
+    padding: 2% 5%;
+}
+
+.news-item {
+    background-color: #dadbb5;
+    padding: 1% 2%;
+    margin: 2% 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.news-item span {
+    color: #333;
+}
+
+.delete-btn {
+    padding: 0.5em 1em;
+    background-color: #90ae85;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: #789a71;
+}
+
+.pagination {
+    text-align: center;
+    padding: 2% 0;
+}
+
+.page-link,
+.dots {
+    display: inline-block;
+    padding: 0.5% 1%;
+    margin: 0 0.5%;
+    background-color: #dadbb5;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.page-link:hover {
+    background-color: #90ae85;
+    color: #fff;
+}
+
+.dots {
+    background-color: transparent;
+}

@@ -64,8 +64,8 @@ footer {
 }
 
 h1 a {
-    text-decoration: none; /* Убираем подчеркивание у ссылки */
-    color: black; /* Цвет текста */
+    text-decoration: none;
+    color: black;
 }
 
 p em {
