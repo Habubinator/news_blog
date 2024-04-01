@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,12 @@
     <link rel="stylesheet" href="../css/utils.css">
     <link rel="stylesheet" href="../css/login.css">
 </head>
+
 <body>
     <header>
-        <div><h1><a href="./main_page.html">politechblog.online</a></h1></div>
+        <div>
+            <h1><a href="./main_page.html">politechblog.online</a></h1>
+        </div>
         <div id="tags">
             <div>
                 <p>Новини <em id="newsEm">10</em></p>
@@ -22,25 +26,27 @@
             </div>
         </div>
         <div>
-            <input type="button" value="+ Додати новину" />
+            <input type="button" value="Додати новину" />
             <input type="button" value="Логін" />
         </div>
     </header>
-    <div id="form">
-        <form>
-            <label for="login">Логін</label>
-            <input type="text" id="login">
+    <section id="mainBodySection">
+        <div id="form">
+            <form>
+                <label for="login">Логін</label>
+                <input type="text" id="login">
 
-            <label for="password">Пароль</label>
-            <input type="password" id="password">
+                <label for="password">Пароль</label>
+                <input type="password" id="password">
 
-            <input type="submit" value="Увійти" id="submit">
-            <a href="./register.html" id="registration">Немає акаунту? Реєстрація</a>
-        </form>
-    </div>
-    <section></section>
+                <input type="button" value="Увійти" id="submit">
+                <a href="./register.html" id="registration">Немає акаунту? Реєстрація</a>
+            </form>
+        </div>
+    </section>
     <footer>
         <h4>politechblog.online &#169 Hudymenko Yevhenii, Martsin Andriy</h4>
     </footer>
 </body>
+
 </html>

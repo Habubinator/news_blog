@@ -1,11 +1,11 @@
-input[type="submit"] {
+#form input[type="button"] {
     height: 57px;
     background-color: #dadbb5;
     border-radius: 24px;
     border: none;
     margin-left: 37px;
     font-size: 16px;
-    width: calc(100% - 74px);
+    width: calc(100% - 70px);
     margin-top: 25px;
 }
 
@@ -13,22 +13,28 @@ input[type="submit"] {
     width: 400px;
     height: 320px;
     border-radius: 25px;
-    background-color: #90AE85;
+    background-color: #90ae85;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin: 0 auto;
-    margin-top: 50px; /* Добавляем отступ сверху */
+    margin-top: 10%; /* Добавляем отступ сверху */
     padding-top: 50px;
-    padding-bottom: 50px
+    padding-bottom: 50px;
 }
 
-label, input, button {
+#form input[type="text"],
+#form input[type="password"] {
+    padding-left: 2%;
+}
+
+label,
+input,
+button {
     margin-bottom: 10px;
     margin-left: 37px;
     margin-top: 10px;
-    
 }
 
 #registration {
@@ -44,8 +50,9 @@ label, input, button {
     display: block; /* Делаем элемент блочным */
 }
 
-#login, #password {
-    width: calc(100% - 74px); /* Вычисляем ширину, учитывая отступ слева */
+#login,
+#password {
+    width: calc(100% - 78px); /* Вычисляем ширину, учитывая отступ слева */
     height: 50px;
     border-radius: 24px;
     border: none;
@@ -55,3 +62,6 @@ label, input, button {
     margin-bottom: 20px; /* Добавляем отступ снизу */
 }
 
+#mainBodySection {
+    height: 64vh;
+}

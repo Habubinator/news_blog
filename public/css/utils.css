@@ -23,7 +23,7 @@ header {
     justify-content: space-between;
     display: flex;
     width: auto;
-    padding: 0 200px 0 200px;
+    padding: 0 8.5% 0 8.5%;
     border-bottom: solid #90ae85;
 }
 
@@ -57,8 +57,7 @@ footer {
     color: black;
     background-color: #90ae85;
     height: 50px;
-    padding-top: 50px;
-    position: fixed;
+    padding-top: 25px;
     bottom: 0;
     width: 100%;
     text-align: center;
