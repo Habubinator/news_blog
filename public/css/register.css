@@ -11,7 +11,7 @@ input[type="submit"] {
 
 #form {
     width: 400px;
-    height: 320px;
+    height: 360px;
     border-radius: 25px;
     background-color: #90AE85;
     display: flex;
@@ -19,9 +19,9 @@ input[type="submit"] {
     align-items: center;
     justify-content: center;
     margin: 0 auto;
-    margin-top: 50px; /* Добавляем отступ сверху */
-    padding-top: 50px;
-    padding-bottom: 50px
+    margin-top: 15px; /* Добавляем отступ сверху */
+    padding-top: 65px;
+    padding-bottom: 60px
 }
 
 label, input, button {
@@ -44,7 +44,7 @@ label, input, button {
     display: block; /* Делаем элемент блочным */
 }
 
-#login, #password {
+#email, #login, #password, #password_rep {
     width: calc(100% - 74px); /* Вычисляем ширину, учитывая отступ слева */
     height: 50px;
     border-radius: 24px;

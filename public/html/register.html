@@ -1,9 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Реєстрація</title>
-    </head>
-    <body></body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../css/utils.css">
+    <link rel="stylesheet" href="../css/register.css">
+</head>
+<body>
+    <header>
+        <div><h1><a href="./main_page.html">politechblog.online</a></h1></div>
+        <div id="tags">
+            <div>
+                <p>Новини <em id="newsEm">10</em></p>
+            </div>
+            <div>
+                <p>Блоги <em id="blogsEm">5</em></p>
+            </div>
+            <div>
+                <p>Допомога <em id="helpEm">3</em></p>
+            </div>
+        </div>
+        <div>
+            <input type="button" value="+ Додати новину" />
+            <input type="button" value="Логін" />
+        </div>
+    </header>
+    <div id="form">
+        <form>
+
+            <label for="email">Ел. адреса</label>
+            <input type="email" id="email">
+
+            <label for="login">Логін</label>
+            <input type="text" id="login">
+
+            <label for="password">Пароль</label>
+            <input type="password" id="password">
+
+            <label for="password_rep">Підтвердити пароль</label>
+            <input type="password" id="password_rep">
+
+            <input type="submit" value="Зареєструватися" id="submit">
+        </form>
+    </div>
+    <section></section>
+    <footer>
+        <h4>politechblog.online &#169 Hudymenko Yevhenii, Martsin Andriy</h4>
+    </footer>
+</body>
 </html>
