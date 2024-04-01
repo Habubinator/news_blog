@@ -29,13 +29,13 @@ header {
 
 #tags {
     justify-content: space-between;
-    width: 400px;
+    width: 500px;
 }
 
 #tags div {
     background-color: #dadbb5;
     border-radius: 24px;
-    width: 100px;
+    width: 120px;
     padding: 2px;
     height: 30px;
     color: black;
