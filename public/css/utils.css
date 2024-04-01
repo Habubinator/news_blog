@@ -62,3 +62,8 @@ footer {
     width: 100%;
     text-align: center;
 }
+
+h1 a {
+    text-decoration: none; /* Убираем подчеркивание у ссылки */
+    color: black; /* Цвет текста */
+}
