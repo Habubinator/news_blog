@@ -1,0 +1,145 @@
+#mainBodySection {
+    display: flex;
+    margin-top: 2.5%;
+}
+
+#categories {
+    padding-right: 20px;
+    margin-right: 3.5%;
+    margin-left: 8.5%;
+}
+
+#blog {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.underDivContainer {
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.subcategory-list {
+    display: none;
+}
+
+.category-toggle {
+    cursor: pointer;
+}
+
+#categories ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 20vw;
+}
+
+.category-item,
+.subcategory-list li {
+    background-color: #f0f0f0;
+    width: 16.5vw;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.category-toggle {
+    cursor: pointer;
+    display: block;
+    color: #333;
+    font-weight: bold;
+}
+
+.subcategory-list {
+    display: none;
+}
+
+.subcategory-list li {
+    width: 12.5vw;
+    padding-left: 20px;
+    background-color: #dadbb5;
+}
+
+.countMarker {
+    color: gray;
+    font-style: inherit;
+    width: max-content;
+    padding-left: 5px;
+}
+
+.category-item {
+    background-color: #f0edd2;
+}
+
+.placeholder-news {
+    width: 900px; /* Задайте ширину по вашему усмотрению */
+    padding: 10px;
+    margin-bottom: 20px; /* Добавьте отступ снизу между новостями */
+}
+
+.news-title {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.news-image {
+    display: block; /* Делаем изображение блочным, чтобы добавить отступы */
+    margin-top: 15px;
+    margin-bottom: 30px; /* Добавляем отступ снизу для разделения заголовка и изображения */
+    max-width: 100%; /* Автоматический размер изображения в пределах контейнера */
+    height: auto;
+}
+
+.news-content {
+    font-size: 16px;
+}
+
+.comment-form textarea,
+.comment-form input[type="text"],
+.comment-form input[type="email"] {
+    width: 600px; /* Устанавливаем ширину 100% для всех полей ввода */
+    box-sizing: border-box; /* Учитываем ширину границ и отступов в общей ширине */
+    margin-bottom: 10px; /* Добавляем отступ снизу между полями ввода */
+    box-sizing: border-box; 
+    margin-bottom: 10px;
+    padding: 10px; /* Добавляем отступ для текста в поле ввода */
+    border-radius: 24px;
+}
+
+.comment-form textarea{
+    height: 150px;
+}
+
+.comment-form input[type="text"],
+.comment-form input[type="email"] {
+    height: 40px; /* Устанавливаем ширину 100% для всех полей ввода */
+    box-sizing: border-box; /* Учитываем ширину границ и отступов в общей ширине */
+    margin-bottom: 10px; /* Добавляем отступ снизу между полями ввода */
+}
+
+#submit{
+    height: 57px;
+    background-color: #dadbb5;
+    border-radius: 24px;
+    border: none;
+    font-size: 16px;
+    width: 200px;
+    margin-top: 25px;
+}
+
+.tags-container {
+    margin-top: 20px; /* Отступ сверху для разделения новости и тегов */
+    margin-bottom: 20px;
+}
+
+.tag {
+    display: inline-block;
+    background-color: #90ae85; /* Цвет фона тега */
+    color: white; /* Цвет текста тега */
+    padding: 5px 10px; /* Отступы вокруг текста тега */
+    border-radius: 75px; /* Закругление углов */
+    margin-right: 5px; /* Отступ между тегами */
+    cursor: pointer; /* Указатель при наведении для обозначения активности */
+}
+

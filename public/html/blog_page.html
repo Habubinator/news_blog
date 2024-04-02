@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Новини</title>
+    <link rel="stylesheet" href="../css/utils.css" />
+    <link rel="stylesheet" href="../css/blog_page.css" />
+</head>
+
+<body>
+    <header>
+        <div>
+            <h1><a href="./main_page.html">politechblog.online</a></h1>
+        </div>
+        <div id="tags">
+            <div>
+                <p>Новини <em id="newsEm">10</em></p>
+            </div>
+            <div>
+                <p>Блоги <em id="blogsEm">5</em></p>
+            </div>
+            <div>
+                <p>Допомога <em id="helpEm">3</em></p>
+            </div>
+        </div>
+        <div></div>
+        <div>
+            <input type="button" value="Додати новину" />
+            <input type="button" value="Логін" />
+        </div>
+    </header>
+    <section id="mainBodySection">
+        <div id="categories">
+            <h2>Категорії</h2>
+            <hr color="#90ae85" width="87%">
+            <ul>
+                <li class="category-item">
+                    <span class="category-toggle">Економіка</span>
+                    <ul class="subcategory-list">
+                        <li>Криптовалюти <em class="countMarker">(5)</em></li>
+                        <li>Акції <em class="countMarker">(3)</em></li>
+                        <li>Інвестиції <em class="countMarker">(1)</em></li>
+                    </ul>
+                </li>
+                <li class="category-item">
+                    <span class="category-toggle">Дипломатія</span>
+                    <ul class="subcategory-list">
+                        <li>Subcategory 1</li>
+                        <li>Subcategory 2</li>
+                    </ul>
+                </li>
+                <li class="category-item">
+                    <span class="category-toggle">Штучний Інтеллект</span>
+                    <ul class="subcategory-list">
+                        <li>Subcategory 1</li>
+                        <li>Subcategory 2</li>
+                        <li>Subcategory 3</li>
+                        <li>Subcategory 4</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div id="blog">
+            <div class="placeholder-news">
+                <h3 class="news-title">Назва</h3>
+                <img src="https://via.placeholder.com/350" alt="News Image" class="news-image">
+                <p class="news-content">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officiis nihil, dolore facilis dignissimos nulla veniam, sed iure inventore itaque eaque tempora eos recusandae assumenda necessitatibus impedit omnis. Sit, tenetur culpa?
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam et delectus, perferendis aliquam facilis tempora harum aperiam? Aliquam consectetur dolores facilis incidunt nam odio nostrum mollitia, iste, quos cum debitis.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut recusandae enim delectus repudiandae accusamus culpa ipsam quidem debitis dolorem dolor, at molestiae? Deserunt non nobis aspernatur unde soluta necessitatibus eligendi!
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officiis nihil, dolore facilis dignissimos nulla veniam, sed iure inventore itaque eaque tempora eos recusandae assumenda necessitatibus impedit omnis. Sit, tenetur culpa?
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam et delectus, perferendis aliquam facilis tempora harum aperiam? Aliquam consectetur dolores facilis incidunt nam odio nostrum mollitia, iste, quos cum debitis.
+                </p>
+                <img src="https://via.placeholder.com/350" alt="News Image" class="news-image">
+                <p class="news-content">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officiis nihil, dolore facilis dignissimos nulla veniam, sed iure inventore itaque eaque tempora eos recusandae assumenda necessitatibus impedit omnis. Sit, tenetur culpa?
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam et delectus, perferendis aliquam facilis tempora harum aperiam? Aliquam consectetur dolores facilis incidunt nam odio nostrum mollitia, iste, quos cum debitis.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut recusandae enim delectus repudiandae accusamus culpa ipsam quidem debitis dolorem dolor, at molestiae? Deserunt non nobis aspernatur unde soluta necessitatibus eligendi!
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officiis nihil, dolore facilis dignissimos nulla veniam, sed iure inventore itaque eaque tempora eos recusandae assumenda necessitatibus impedit omnis. Sit, tenetur culpa?
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam et delectus, perferendis aliquam facilis tempora harum aperiam? Aliquam consectetur dolores facilis incidunt nam odio nostrum mollitia, iste, quos cum debitis.
+                </p>
+                <div class="tags-container">
+                    <div class="tag">Тег1</div>
+                    <div class="tag">Тег2</div>
+                </div>
+                <p> </p>
+            <form class="comment-form">
+                <textarea name="comment" rows="4" cols="50" placeholder="Коментар тут"></textarea><br>
+                <input type="text" id="name" name="name" placeholder="Ім'я"><br>
+                <input type="email" id="email" name="email" placeholder="E-mail"><br>
+                <input type="submit" value="Відправити" id = "submit">
+            </form>
+        
+            <div class="comments">
+            </div>
+        </div>
+    </section>
+    <footer>
+        <h4>politechblog.online &#169 Hudymenko Yevhenii, Martsin Andriy</h4>
+    </footer>
+    <script src="./../js/main_page.js"></script>
+</body>
+
+</html>
