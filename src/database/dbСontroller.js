@@ -13,9 +13,9 @@ class DBController {
     }) {
         const query = `
         INSERT INTO users (id, email, username, password, rating, isBanned, isAdmin)
-        VALUES (?, ?, ?, ?, ?, ?, ?)`;
+        VALUES ($1, $2, $3, $4, $5, $6, $7)`;
         try {
-            const [rows] = await db.query(query, [
+            const result = await db.query(query, [
                 id,
                 email,
                 username,
@@ -24,7 +24,7 @@ class DBController {
                 isBanned,
                 isAdmin,
             ]);
-            return rows;
+            return result.rows;
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -35,8 +35,8 @@ class DBController {
     async getUserByUsername(username) {
         const query = `SELECT * FROM users WHERE username = $1`;
         try {
-            const [rows] = await db.query(query, [username]);
-            return rows[0];
+            const result = await db.query(query, [username]);
+            return result.rows[0];
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -45,10 +45,10 @@ class DBController {
 
     // Get a user by email
     async getUserByEmail(email) {
-        const query = `SELECT * FROM users WHERE email = ?`;
+        const query = `SELECT * FROM users WHERE email = $1`;
         try {
-            const [rows] = await db.query(query, [email]);
-            return rows[0];
+            const result = await db.query(query, [email]);
+            return result.rows[0];
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -57,10 +57,10 @@ class DBController {
 
     // Get a user by id
     async getUserById(id) {
-        const query = `SELECT * FROM users WHERE id = ?`;
+        const query = `SELECT * FROM users WHERE id = $1`;
         try {
-            const [rows] = await db.query(query, [id]);
-            return rows[0];
+            const result = await db.query(query, [id]);
+            return result.rows[0];
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -69,10 +69,10 @@ class DBController {
 
     // Ban a user
     async banUser(id) {
-        const query = `UPDATE users SET isBanned = TRUE WHERE id = ?`;
+        const query = `UPDATE users SET isBanned = TRUE WHERE id = $1`;
         try {
-            const [rows] = await db.query(query, [id]);
-            return rows;
+            const result = await db.query(query, [id]);
+            return result.rowCount;
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -81,10 +81,10 @@ class DBController {
 
     // Unban a user
     async unbanUser(id) {
-        const query = `UPDATE users SET isBanned = FALSE WHERE id = ?`;
+        const query = `UPDATE users SET isBanned = FALSE WHERE id = $1`;
         try {
-            const [rows] = await db.query(query, [id]);
-            return rows;
+            const result = await db.query(query, [id]);
+            return result.rowCount;
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -93,10 +93,10 @@ class DBController {
 
     // Promote a user to admin
     async promoteUser(id) {
-        const query = `UPDATE users SET isAdmin = TRUE WHERE id = ?`;
+        const query = `UPDATE users SET isAdmin = TRUE WHERE id = $1`;
         try {
-            const [rows] = await db.query(query, [id]);
-            return rows;
+            const result = await db.query(query, [id]);
+            return result.rowCount;
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -105,10 +105,10 @@ class DBController {
 
     // Demote a user from admin
     async demoteUser(id) {
-        const query = `UPDATE users SET isAdmin = FALSE WHERE id = ?`;
+        const query = `UPDATE users SET isAdmin = FALSE WHERE id = $1`;
         try {
-            const [rows] = await db.query(query, [id]);
-            return rows;
+            const result = await db.query(query, [id]);
+            return result.rowCount;
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -117,10 +117,10 @@ class DBController {
 
     // Change user rating
     async changeUserRating({ id, increment }) {
-        const query = `UPDATE users SET rating = rating + ? WHERE id = ?`;
+        const query = `UPDATE users SET rating = rating + $1 WHERE id = $2`;
         try {
-            const [rows] = await db.query(query, [increment, id]);
-            return rows;
+            const result = await db.query(query, [increment, id]);
+            return result.rowCount;
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -137,16 +137,16 @@ class DBController {
     }) {
         const query = `
         INSERT INTO comments (id, author, comment_content, reply_to_comment, news_id)
-        VALUES (?, ?, ?, ?, ?)`;
+        VALUES ($1, $2, $3, $4, $5)`;
         try {
-            const [rows] = await db.query(query, [
+            const result = await db.query(query, [
                 id,
                 author,
                 comment_content,
                 reply_to_comment,
                 news_id,
             ]);
-            return rows;
+            return result.rows;
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -155,10 +155,10 @@ class DBController {
 
     // Delete a comment
     async deleteComment(id) {
-        const query = `DELETE FROM comments WHERE id = ?`;
+        const query = `DELETE FROM comments WHERE id = $1`;
         try {
-            const [rows] = await db.query(query, [id]);
-            return rows;
+            const result = await db.query(query, [id]);
+            return result.rowCount;
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -167,10 +167,10 @@ class DBController {
 
     // Create a new image
     async createImage({ id, image_href }) {
-        const query = `INSERT INTO images (id, image_href) VALUES (?, ?)`;
+        const query = `INSERT INTO images (id, image_href) VALUES ($1, $2)`;
         try {
-            const [rows] = await db.query(query, [id, image_href]);
-            return rows;
+            const result = await db.query(query, [id, image_href]);
+            return result.rows;
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -179,10 +179,10 @@ class DBController {
 
     // Get an image by id
     async getImageById(id) {
-        const query = `SELECT * FROM images WHERE id = ?`;
+        const query = `SELECT * FROM images WHERE id = $1`;
         try {
-            const [rows] = await db.query(query, [id]);
-            return rows[0];
+            const result = await db.query(query, [id]);
+            return result.rows[0];
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -191,10 +191,10 @@ class DBController {
 
     // Delete an image
     async deleteImage(id) {
-        const query = `DELETE FROM images WHERE id = ?`;
+        const query = `DELETE FROM images WHERE id = $1`;
         try {
-            const [rows] = await db.query(query, [id]);
-            return rows;
+            const result = await db.query(query, [id]);
+            return result.rowCount;
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -203,10 +203,10 @@ class DBController {
 
     // Create a new tag
     async createTag({ id, tag_name }) {
-        const query = `INSERT INTO tags (id, tag_name) VALUES (?, ?)`;
+        const query = `INSERT INTO tags (id, tag_name) VALUES ($1, $2)`;
         try {
-            const [rows] = await db.query(query, [id, tag_name]);
-            return rows;
+            const result = await db.query(query, [id, tag_name]);
+            return result.rows;
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -215,10 +215,10 @@ class DBController {
 
     // Get a tag by tag name
     async getTag(tag_name) {
-        const query = `SELECT * FROM tags WHERE tag_name = ?`;
+        const query = `SELECT * FROM tags WHERE tag_name = $1`;
         try {
-            const [rows] = await db.query(query, [tag_name]);
-            return rows[0];
+            const result = await db.query(query, [tag_name]);
+            return result.rows[0];
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -227,10 +227,10 @@ class DBController {
 
     // Delete a tag
     async deleteTag(id) {
-        const query = `DELETE FROM tags WHERE id = ?`;
+        const query = `DELETE FROM tags WHERE id = $1`;
         try {
-            const [rows] = await db.query(query, [id]);
-            return rows;
+            const result = await db.query(query, [id]);
+            return result.rowCount;
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -248,9 +248,9 @@ class DBController {
     }) {
         const query = `
         INSERT INTO news (id, title, small_desc, main_image, author, news_content)
-        VALUES (?, ?, ?, ?, ?, ?)`;
+        VALUES ($1, $2, $3, $4, $5, $6)`;
         try {
-            const [rows] = await db.query(query, [
+            const result = await db.query(query, [
                 id,
                 title,
                 small_desc,
@@ -258,7 +258,7 @@ class DBController {
                 author,
                 news_content,
             ]);
-            return rows;
+            return result.rows;
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -267,10 +267,10 @@ class DBController {
 
     // Delete a news article
     async deleteNews(id) {
-        const query = `DELETE FROM news WHERE id = ?`;
+        const query = `DELETE FROM news WHERE id = $1`;
         try {
-            const [rows] = await db.query(query, [id]);
-            return rows;
+            const result = await db.query(query, [id]);
+            return result.rowCount;
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -279,10 +279,10 @@ class DBController {
 
     // Create a news-tag association
     async createNewsTag({ id, tag_id, news_id }) {
-        const query = `INSERT INTO news_tags (id, tag_id, news_id) VALUES (?, ?, ?)`;
+        const query = `INSERT INTO news_tags (id, tag_id, news_id) VALUES ($1, $2, $3)`;
         try {
-            const [rows] = await db.query(query, [id, tag_id, news_id]);
-            return rows;
+            const result = await db.query(query, [id, tag_id, news_id]);
+            return result.rows;
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -295,10 +295,10 @@ class DBController {
         SELECT tags.tag_name
         FROM tags
         JOIN news_tags ON tags.id = news_tags.tag_id
-        WHERE news_tags.news_id = ?`;
+        WHERE news_tags.news_id = $1`;
         try {
-            const [rows] = await db.query(query, [news_id]);
-            return rows;
+            const result = await db.query(query, [news_id]);
+            return result.rows;
         } catch (error) {
             console.log(error, query);
             throw error;
@@ -313,8 +313,8 @@ class DBController {
         JOIN news_tags ON tags.id = news_tags.tag_id
         GROUP BY tags.tag_name`;
         try {
-            const [rows] = await db.query(query);
-            return rows;
+            const result = await db.query(query);
+            return result.rows;
         } catch (error) {
             console.log(error, query);
             throw error;
