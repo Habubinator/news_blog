@@ -19,6 +19,10 @@ CREATE TABLE
         FOREIGN KEY (reply_to_comment) REFERENCES comments (id)
     );
 
+ALTER TABLE comments ADD news_id INT;
+
+ALTER TABLE comments ADD FOREIGN KEY (news_id) REFERENCES news (id);
+
 CREATE TABLE
     images (id INT PRIMARY KEY, image_href VARCHAR(256));
 
