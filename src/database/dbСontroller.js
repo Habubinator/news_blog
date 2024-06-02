@@ -276,6 +276,21 @@ class DBController {
         }
     }
 
+    async getNewsPageContent(id)
+    {
+        const query = 'SELECT * FROM news WHERE id = $1;';
+  
+        pool.query(query, values, (error, result) => {
+            if (error) {
+                console.error('Помилка:', error);
+                res.status(500).send('Помилка при зчитуванні з БД.');
+            } else {
+                const news = result.rows[0]; 
+                res.json(news);
+            }
+        });
+    }
+
     // Delete a news article
     async deleteNews(id) {
         const query = `DELETE FROM news WHERE id = $1`;
