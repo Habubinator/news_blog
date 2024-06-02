@@ -3,7 +3,6 @@ const db = require("./dbPool");
 class DBController {
     // Create a new user
     async createUser({
-        id,
         email,
         username,
         password,
@@ -11,12 +10,12 @@ class DBController {
         isBanned = false,
         isAdmin = false,
     }) {
+       
         const query = `
-        INSERT INTO users (id, email, username, password, rating, isBanned, isAdmin)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)`;
+        INSERT INTO users (email, username, password, rating, isBanned, isAdmin)
+        VALUES ($1, $2, $3, $4, $5, $6)`;
         try {
             const result = await db.query(query, [
-                id,
                 email,
                 username,
                 password,
@@ -24,9 +23,21 @@ class DBController {
                 isBanned,
                 isAdmin,
             ]);
-            return result.rows;
+            return result.rows[0];
         } catch (error) {
             console.log(error, query);
+            throw error;
+        }
+    }
+
+    // check if user with email exists in DB
+    async findUserByEmail(email) {
+        const query = `SELECT * FROM users WHERE email = $1`;
+        try {
+            const result = await db.query(query, [email]);
+            return result.rows[0]; 
+        } catch (error) {
+            console.error(error, query);
             throw error;
         }
     }
