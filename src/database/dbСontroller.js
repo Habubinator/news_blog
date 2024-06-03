@@ -282,7 +282,9 @@ class DBController {
 
             const result = await db.query(query, [id]);
             
+            console.log(result)
             return result.rows[0].news_content;
+            
         } catch (error) {
             console.error('Ошибка:', error);
             throw error;

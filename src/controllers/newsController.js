@@ -20,6 +20,7 @@ class NewsController
         try {
             const id = 3; //test
             const newsContent = await db.getNewsPageContent(id); 
+            console.log(newsContent)
             res.json({ success: true, page_content: newsContent });
         } catch (error) {
             console.error('Помилка:', error);
