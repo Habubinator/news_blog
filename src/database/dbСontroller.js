@@ -276,19 +276,17 @@ class DBController {
         }
     }
 
-    async getNewsPageContent(id)
-    {
-        const query = 'SELECT * FROM news WHERE id = $1;';
-  
-        pool.query(query, values, (error, result) => {
-            if (error) {
-                console.error('Помилка:', error);
-                res.status(500).send('Помилка при зчитуванні з БД.');
-            } else {
-                const news = result.rows[0]; 
-                res.json(news);
-            }
-        });
+    async getNewsPageContent(id) {
+        const query = 'SELECT news_content FROM news WHERE id = $1;';
+        try {
+
+            const result = await db.query(query, [id]);
+            
+            return result.rows[0].news_content;
+        } catch (error) {
+            console.error('Ошибка:', error);
+            throw error;
+        }
     }
 
     // Delete a news article
