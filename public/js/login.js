@@ -23,8 +23,10 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = "/";
         } else if (response.status === 400) {
             alert("Неправильний логін або пароль.");
+        } else if (response.status === 403) {
+            alert("Неправильний пароль.");
         } else if (response.status === 404) {
-            alert("Юзеру з даним логіном не існує");
+            alert("Користувача з даним логіном не існує");
         } else {
             alert("Помилка сервера: " + response.status);
         }

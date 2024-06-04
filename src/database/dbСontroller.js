@@ -277,13 +277,16 @@ class DBController {
     }
 
     async getNewsPageContent(id) {
-        const query = 'SELECT news_content FROM news WHERE id = $1;';
+        const query = 'SELECT * FROM news WHERE id = $1;';
         try {
 
             const result = await db.query(query, [id]);
+            console.log("result.author");
+            console.log(result.rows[0].author);
+            
             
             console.log(result)
-            return result.rows[0].news_content;
+            return result.rows[0];
             
         } catch (error) {
             console.error('Ошибка:', error);

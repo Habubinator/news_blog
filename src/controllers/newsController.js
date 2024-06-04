@@ -19,9 +19,21 @@ class NewsController
     async getNewsPageContent(req, res) {
         try {
             const id = 3; //test
+
             const newsContent = await db.getNewsPageContent(id); 
-            console.log(newsContent)
-            res.json({ success: true, page_content: newsContent });
+            const newsTags = await db.getNewsTags(id); 
+            const author = await db.getUserById(newsContent.author);
+
+            console.log('Thats the way it is')
+            console.log(author)
+
+            const responseContent = {
+                ...newsContent,
+                tags: newsTags,
+                author: author
+            };
+    
+            res.json({ success: true, responseContent });
         } catch (error) {
             console.error('Помилка:', error);
             res.status(500).json({ success: false, message: 'О-па' });

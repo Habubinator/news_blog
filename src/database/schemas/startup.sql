@@ -49,3 +49,5 @@ CREATE TABLE
         FOREIGN KEY (tag_id) REFERENCES tags (id),
         FOREIGN KEY (news_id) REFERENCES news (id)
     );
+
+    

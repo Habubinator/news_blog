@@ -83,6 +83,13 @@
     margin-bottom: 15px;
 }
 
+#news_author {
+    font-weight: normal; 
+    color: gray; 
+    margin-top: 20px;
+
+}
+
 .news-image {
     display: block; /* Делаем изображение блочным, чтобы добавить отступы */
     margin-top: 15px;
