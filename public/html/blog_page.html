@@ -66,18 +66,16 @@
             <div class="placeholder-news">
                 <h3 class="news-title" id = "news-title"></h3>
                 <h4 id = "news_author"></h4>
-                <img src="https://via.placeholder.com/350" alt="News Image" class="news-image">
+                <div id = "main_image"></div>
                 <div id = 'news_content'> asdasd </div>
                 <div class="tags-container" id="tags-container"></div>
 
             <form class="comment-form">
-                <textarea name="comment" rows="4" cols="50" placeholder="Коментар тут"></textarea><br>
-                <input type="text" id="name" name="name" placeholder="Ім'я"><br>
-                <input type="email" id="email" name="email" placeholder="E-mail"><br>
+                <textarea name="comment" id = 'commForm' rows="4" cols="50" placeholder="Коментар тут"></textarea><br>
                 <input type="submit" value="Відправити" id = "submit">
             </form>
         
-            <div class="comments">
+            <div class="comments" id = "comments">
             </div>
         </div>
     </section>

@@ -21,16 +21,17 @@ class NewsController
             const id = 3; //test
 
             const newsContent = await db.getNewsPageContent(id); 
+            const mainImage = await db.getImageById(newsContent.main_image)
             const newsTags = await db.getNewsTags(id); 
             const author = await db.getUserById(newsContent.author);
-
-            console.log('Thats the way it is')
-            console.log(author)
+            const comments = await db.pullCommentsByNewsId(id);
 
             const responseContent = {
                 ...newsContent,
+                mainImage: mainImage,
                 tags: newsTags,
-                author: author
+                author: author,
+                comments: comments
             };
     
             res.json({ success: true, responseContent });
@@ -40,6 +41,28 @@ class NewsController
         }
     }
 
+    async addComment(req, res){
+        try{
+
+            const { userId, comment_content, news_id } = req.body;
+
+            const author = userId;
+
+            const duplicateCheck = await db.commentDublicator(author, news_id);
+
+            if (duplicateCheck.duplicate) {
+                res.status(400).json({ success: false, message: 'Duplicate comment found' });
+            } else {
+                await db.createCommentByUser({ author, comment_content, news_id });
+                res.status(200).json({ success: true, message: 'Comment added successfully' });
+            }
+
+        } catch (error) {
+            console.error('Помилка:', error);
+            res.status(500).json({ success: false, message: 'О-па' });
+        }
+
+    }
     
 }
 module.exports = new NewsController();

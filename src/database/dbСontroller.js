@@ -164,6 +164,60 @@ class DBController {
         }
     }
 
+    async createCommentByUser({
+        author,
+        comment_content,
+        news_id,
+    }) {
+        const query = `
+        INSERT INTO comments (author, comment_content, reply_to_comment, news_id)
+        VALUES ($1, $2, $3, $4)`;
+        try {
+            const result = await db.query(query, [
+                author,
+                comment_content,
+                null,
+                news_id,
+            ]);
+            console.log(author)
+            console.log(result)
+            return result.rows;
+        } catch (error) {
+            console.log(error, query);
+            throw error;
+        }
+    }
+
+    async commentDublicator(author_id, news_id) {
+        const query = `SELECT * FROM comments WHERE author = $1 AND news_id = $2;`;
+        try {
+            const result = await db.query(query, [author_id, news_id]);
+            if (result.rows.length > 0) {
+                // Если есть совпадения, возвращаем позитивный результат
+                return { duplicate: true, message: 'Duplicate comment found' };
+            } else {
+                // Если нет совпадений, возвращаем негативный результат
+                return { duplicate: false, message: 'No duplicate comments found' };
+            }
+        } catch (error) {
+            console.log(error, query);
+            throw error;
+        }
+    }
+
+    //pulling comments 
+    async pullCommentsByNewsId(id){
+        const query = `SELECT * FROM comments WHERE news_id = $1`;
+        try {
+            const result = await db.query(query, [id]);
+
+            return result.rows;
+        } catch (error) {
+            console.log(error, query);
+            throw error;
+        }
+    }
+
     // Delete a comment
     async deleteComment(id) {
         const query = `DELETE FROM comments WHERE id = $1`;
@@ -281,11 +335,7 @@ class DBController {
         try {
 
             const result = await db.query(query, [id]);
-            console.log("result.author");
-            console.log(result.rows[0].author);
             
-            
-            console.log(result)
             return result.rows[0];
             
         } catch (error) {

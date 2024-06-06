@@ -6,14 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(data => {
                     if (data.success) {
 
-                        console.log('data');
-                        console.log(data);
-
                         const newsContent = data;
-
-
-                        console.log("Slurp")
-                        console.log(newsContent);
                         
                         pullContent(newsContent); 
                     } else {
@@ -21,12 +14,36 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 })
         .catch(error => console.error('Error:', error)); 
+
+
+    const userId = 1; //placeholder
+    const news_id = 3; //placeholder
+    var submitButton = document.getElementById('submit');
+
+    submitButton.addEventListener("click", async function () {
+
+        var commentForm = document.getElementById('commForm').value;
+
+        // Виконати запит до сервера для перевірки даних
+        const response = await fetch("blog_page/submit_comment", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json;charset=utf-8",
+            },
+            body: JSON.stringify({
+                userId: userId,
+                comment_content: commentForm,
+                news_id: news_id
+            }),
+        });
+
+        if (response.status == 400){
+            alert("Ви вже залишали коментар.")
+        }
+    });
 });
 
 function pullContent(newsContent) {
-
-    console.log("Entered function")
-    console.log(newsContent)
 
     const titleContainer = document.getElementById('news-title');
     titleContainer.innerHTML = newsContent.responseContent.title;
@@ -34,6 +51,12 @@ function pullContent(newsContent) {
     const authorContainer = document.getElementById('news_author');
     authorContainer.innerHTML = "Author: " + newsContent.responseContent.author.username;
 
+    const mainImageContainer = document.getElementById('main_image');
+    const imgElement = document.createElement('img');
+    imgElement.src = newsContent.responseContent.mainImage.image_href;
+
+    mainImageContainer.appendChild(imgElement);
+    
     const contentContainer = document.getElementById('news_content');
     contentContainer.innerHTML = newsContent.responseContent.news_content;
 
@@ -47,14 +70,21 @@ function pullContent(newsContent) {
 
         tagsElement.classList.add("tag")
 
-        
-        console.log(tag_name.tag_name);
-        console.log(tagsElement);
-        console.log(tagsContainer)
-
         tagsContainer.appendChild(tagsElement)
-
-        console.log(tagsContainer);
     });
+
+    const commentsContainer = document.getElementById('comments'); 
+
+    newsContent.responseContent.comments.forEach(comment => {
+
+        const commsElement = document.createElement('div');
+        commsElement.classList.add('comment')
+
+        commsElement.innerHTML = `
+        <div id = "user"> ${comment.author}</div>
+        <div id = "text"> ${comment.comment_content}</div>`;
+
+        commentsContainer.appendChild(commsElement);
+    })
 }
 
