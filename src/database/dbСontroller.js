@@ -206,6 +206,21 @@ class DBController {
     }
 
     //pulling comments 
+    async pullCommentsById(id){
+        const query = `SELECT * FROM comments WHERE id = $1`;
+        try {
+            const result = await db.query(query, [id]);
+
+            console.log(result.rows)
+
+            return result.rows;
+        } catch (error) {
+            console.log(error, query);
+            throw error;
+        }
+    }
+
+    //pulling comments 
     async pullCommentsByNewsId(id){
         const query = `SELECT * FROM comments WHERE news_id = $1`;
         try {
@@ -218,6 +233,19 @@ class DBController {
         }
     }
 
+    //pulling comments 
+    async pullResponses(id){
+        const query = `SELECT reply_to_comment FROM comments WHERE id = $1;`;
+        try {
+            const result = await db.query(query, [id]);
+
+            return result.rows;
+        } catch (error) {
+            console.log(error, query);
+            throw error;
+        }
+    }
+    
     // Delete a comment
     async deleteComment(id) {
         const query = `DELETE FROM comments WHERE id = $1`;

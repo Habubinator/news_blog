@@ -41,6 +41,27 @@ class NewsController
         }
     }
 
+    async getResponsesByCommentId(req, res) {
+        const { commentId } = req.body;
+
+        const responses = await db.pullResponses(commentId);
+
+        const responseValues = responses.map(response => Object.values(response)).flat();
+
+        console.log(  responseValues  )
+
+        for (const value of responseValues) {
+            try {
+                const comments = await db.pullCommentsById(value);
+                console.log(comments); // Обработка полученных комментариев
+            } catch (error) {
+                console.error('Ошибка при получении комментариев:', error);
+            }
+        }
+
+    }
+    
+
     async addComment(req, res){
         try{
 

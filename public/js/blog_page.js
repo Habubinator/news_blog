@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         var commentForm = document.getElementById('commForm').value;
 
-        // Виконати запит до сервера для перевірки даних
         const response = await fetch("blog_page/submit_comment", {
             method: "POST",
             headers: {
@@ -85,6 +84,20 @@ function pullContent(newsContent) {
         <div id = "text"> ${comment.comment_content}</div>`;
 
         commentsContainer.appendChild(commsElement);
+
+        pullResponsesByCommentId(comment.id, commsElement);
     })
+
+    async function pullResponsesByCommentId(commentId, parentElement) {
+        const response = await fetch(`/news/blog_page/responses/${commentId}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json;charset=utf-8",
+            },
+            body: JSON.stringify({
+                commentId: commentId
+            }),
+        });
+    }
 }
 
