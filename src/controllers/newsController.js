@@ -18,20 +18,28 @@ class NewsController
 
     async getNewsPageContent(req, res) {
         try {
-            const id = 3; //test
-
+            const id = 3; // test
+    
             const newsContent = await db.getNewsPageContent(id); 
-            const mainImage = await db.getImageById(newsContent.main_image)
+            const mainImage = await db.getImageById(newsContent.main_image);
             const newsTags = await db.getNewsTags(id); 
             const author = await db.getUserById(newsContent.author);
             const comments = await db.pullCommentsByNewsId(id);
-
+    
+            const commentsWithAuthors = await Promise.all(comments.map(async (comment) => {
+                const commentAuthor = await db.getUserById(comment.author);
+                return {
+                    ...comment,
+                    author: commentAuthor
+                };
+            }));
+    
             const responseContent = {
                 ...newsContent,
                 mainImage: mainImage,
                 tags: newsTags,
                 author: author,
-                comments: comments
+                comments: commentsWithAuthors
             };
     
             res.json({ success: true, responseContent });
@@ -43,22 +51,35 @@ class NewsController
 
     async getResponsesByCommentId(req, res) {
         const { commentId } = req.body;
+    
+        try {
+            const responses = await db.pullResponses(commentId);
+            const responseValues = responses.map(response => Object.values(response)).flat();
+            
+            let allComments = [];
+    
+            for (const value of responseValues) {
+                try {
+                    const comments = await db.pullCommentsById(value);
+                    
+                    for (const comment of comments) {
 
-        const responses = await db.pullResponses(commentId);
+                        const author = await db.getUserById(comment.author);
 
-        const responseValues = responses.map(response => Object.values(response)).flat();
-
-        console.log(  responseValues  )
-
-        for (const value of responseValues) {
-            try {
-                const comments = await db.pullCommentsById(value);
-                console.log(comments); // Обработка полученных комментариев
-            } catch (error) {
-                console.error('Ошибка при получении комментариев:', error);
+                        allComments.push({ comment: comment.comment_content, author });
+                    }
+    
+                } catch (error) {
+                    console.error('Ошибка при получении комментариев:', error);
+                }
             }
-        }
 
+            res.json({ success: true, comments: allComments });
+    
+        } catch (error) {
+            console.error('Ошибка при получении ответов:', error);
+            res.status(500).json({ success: false, message: 'О-па' });
+        }
     }
     
 
@@ -77,6 +98,30 @@ class NewsController
                 await db.createCommentByUser({ author, comment_content, news_id });
                 res.status(200).json({ success: true, message: 'Comment added successfully' });
             }
+
+        } catch (error) {
+            console.error('Помилка:', error);
+            res.status(500).json({ success: false, message: 'О-па' });
+        }
+
+    }
+
+    async addReply(req, res){
+        try{
+
+            const { userId, reply_content, comment_id} = req.body;
+
+
+            console.log("reply_content")
+            console.log(userId)
+            console.log(reply_content)
+            console.log(comment_id)
+
+            const author = userId;
+            
+            await db.createReply({ author, reply_content, comment_id });
+            res.status(200).json({ success: true, message: 'Comment added successfully' });
+            
 
         } catch (error) {
             console.error('Помилка:', error);

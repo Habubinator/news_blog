@@ -188,6 +188,65 @@ class DBController {
         }
     }
 
+    async createReply({
+        author,
+        reply_content,
+        comment_id,
+    }) {
+        const insertQuery = `
+        INSERT INTO comments (author, comment_content, reply_to_comment, news_id)
+        VALUES ($1, $2, $3, $4)`;
+
+        /*const updateQuery = `
+        UPDATE comments
+        SET reply_to_comment = reply_to_comment || (
+        SELECT id
+        FROM comments
+        WHERE author = $1 AND comment_content = $2
+        )
+        WHERE id = $3;
+        ` */
+        
+        const updateQuery = `
+        UPDATE comments
+        SET reply_to_comment = (
+        SELECT id
+        FROM comments
+        WHERE author = $1 AND comment_content = $2
+        )
+        WHERE id = $3;
+        `
+    
+        try {
+            await db.query('BEGIN');
+    
+            await db.query(insertQuery, [
+                author,
+                reply_content,
+                null,
+                null,
+            ]);
+
+            await db.query('COMMIT');
+
+            await db.query('BEGIN');
+    
+            await db.query(updateQuery, [
+                author,
+                reply_content,
+                comment_id,
+            ]);
+    
+            await db.query('COMMIT');
+    
+            return { success: true };
+        } catch (error) {
+            await db.query('ROLLBACK');
+            console.log(error, insertQuery);
+            throw error;
+        }
+    }
+
     async commentDublicator(author_id, news_id) {
         const query = `SELECT * FROM comments WHERE author = $1 AND news_id = $2;`;
         try {
@@ -211,7 +270,6 @@ class DBController {
         try {
             const result = await db.query(query, [id]);
 
-            console.log(result.rows)
 
             return result.rows;
         } catch (error) {
