@@ -87,7 +87,7 @@
     font-weight: normal; 
     color: gray; 
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
 .news-image {
@@ -104,6 +104,11 @@
 
 .news-content {
     font-size: 16px;
+}
+
+.text-image{
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .comment-form textarea,

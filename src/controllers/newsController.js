@@ -41,6 +41,10 @@ class NewsController
                 author: author,
                 comments: commentsWithAuthors
             };
+
+            console.log("newsContent.news_content")
+            console.log(newsContent.news_content)
+
     
             res.json({ success: true, responseContent });
         } catch (error) {
@@ -106,12 +110,6 @@ class NewsController
 
             const { userId, reply_content, comment_id} = req.body;
 
-
-            console.log("reply_content")
-            console.log(userId)
-            console.log(reply_content)
-            console.log(comment_id)
-
             const author = userId;
             
             await db.createReply({ author, reply_content, comment_id });
@@ -119,7 +117,7 @@ class NewsController
             
 
         } catch (error) {
-            console.error('Помилка:', error);
+            console.error('Помилка: ', error);
             res.status(500).json({ success: false, message: 'О-па' });
         }
 

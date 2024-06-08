@@ -37,8 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }),
         });
 
-        const responseData = await response.json();
-
         if (response.status == 200){
             alert("Дякую за коментар.")
         }
@@ -70,6 +68,7 @@ function pullContent(newsContent) {
     
     const contentContainer = document.getElementById('news_content');
     contentContainer.innerHTML = newsContent.responseContent.news_content;
+
 
     const tagsContainer = document.getElementById('tags-container'); 
     console.log(tagsContainer);
