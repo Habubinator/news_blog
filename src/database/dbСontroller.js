@@ -193,56 +193,21 @@ class DBController {
         reply_content,
         comment_id,
     }) {
-        const insertQuery = `
+        const query = `
         INSERT INTO comments (author, comment_content, reply_to_comment, news_id)
         VALUES ($1, $2, $3, $4)`;
-
-        /*const updateQuery = `
-        UPDATE comments
-        SET reply_to_comment = reply_to_comment || (
-        SELECT id
-        FROM comments
-        WHERE author = $1 AND comment_content = $2
-        )
-        WHERE id = $3;
-        ` */
-        
-        const updateQuery = `
-        UPDATE comments
-        SET reply_to_comment = (
-        SELECT id
-        FROM comments
-        WHERE author = $1 AND comment_content = $2
-        )
-        WHERE id = $3;
-        `
-    
         try {
-            await db.query('BEGIN');
-    
-            await db.query(insertQuery, [
-                author,
-                reply_content,
-                null,
-                null,
-            ]);
-
-            await db.query('COMMIT');
-
-            await db.query('BEGIN');
-    
-            await db.query(updateQuery, [
+            const result = await db.query(query, [
                 author,
                 reply_content,
                 comment_id,
+                null,
             ]);
-    
-            await db.query('COMMIT');
-    
-            return { success: true };
+            console.log(author)
+            console.log(result)
+            return result.rows;
         } catch (error) {
-            await db.query('ROLLBACK');
-            console.log(error, insertQuery);
+            console.log(error, query);
             throw error;
         }
     }
@@ -293,7 +258,7 @@ class DBController {
 
     //pulling comments 
     async pullResponses(id){
-        const query = `SELECT reply_to_comment FROM comments WHERE id = $1;`;
+        const query = `SELECT * FROM comments WHERE reply_to_comment = $1;`;
         try {
             const result = await db.query(query, [id]);
 

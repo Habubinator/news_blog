@@ -53,28 +53,18 @@ class NewsController
         const { commentId } = req.body;
     
         try {
-            const responses = await db.pullResponses(commentId);
-            const responseValues = responses.map(response => Object.values(response)).flat();
             
-            let allComments = [];
-    
-            for (const value of responseValues) {
-                try {
-                    const comments = await db.pullCommentsById(value);
-                    
-                    for (const comment of comments) {
+            const response = await db.pullResponses(commentId)
 
-                        const author = await db.getUserById(comment.author);
+            const responsesWithAuthors = await Promise.all(response.map(async (response) => {
+                const responseAuthor = await db.getUserById(response.author);
+                return {
+                    ...response,
+                    author: responseAuthor
+                };
+            }));
 
-                        allComments.push({ comment: comment.comment_content, author });
-                    }
-    
-                } catch (error) {
-                    console.error('Ошибка при получении комментариев:', error);
-                }
-            }
-
-            res.json({ success: true, comments: allComments });
+            res.json({ success: true, responsesWithAuthors });
     
         } catch (error) {
             console.error('Ошибка при получении ответов:', error);
@@ -88,12 +78,17 @@ class NewsController
 
             const { userId, comment_content, news_id } = req.body;
 
+            if (!comment_content.trim()) {
+                return res.status(401).json({ success: false, message: 'Comment content is empty' });
+            }
+
             const author = userId;
 
             const duplicateCheck = await db.commentDublicator(author, news_id);
 
             if (duplicateCheck.duplicate) {
-                res.status(400).json({ success: false, message: 'Duplicate comment found' });
+                console.log("Bruh")
+                res.status(201).json({ success: false, message: 'Duplicate comment found' });
             } else {
                 await db.createCommentByUser({ author, comment_content, news_id });
                 res.status(200).json({ success: true, message: 'Comment added successfully' });

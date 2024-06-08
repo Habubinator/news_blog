@@ -17,11 +17,11 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error('Error:', error)); 
 
 
-    const userId = 1; //placeholder
+    const userId = 2; //placeholder
     const news_id = 3; //placeholder
     var submitButton = document.getElementById('submit');
 
-    submitButton.addEventListener("click", async function () {
+    submitButton.addEventListener("click", async function (event) {
 
         var commentForm = document.getElementById('commForm').value;
 
@@ -37,8 +37,19 @@ document.addEventListener("DOMContentLoaded", function () {
             }),
         });
 
-        if (response.status == 400){
+        const responseData = await response.json();
+
+        if (response.status == 200){
+            alert("Дякую за коментар.")
+        }
+        else if (response.status == 201){
+            event.preventDefault();
             alert("Ви вже залишали коментар.")
+            event.preventDefault();
+        }
+        else if (response.status == 401){
+            alert("Напишіть коментар.")
+            event.preventDefault();
         }
     });
 });
@@ -75,7 +86,7 @@ function pullContent(newsContent) {
 
     const commentsContainer = document.getElementById('comments'); 
 
-    newsContent.responseContent.comments.forEach((comment, index) => {
+    newsContent.responseContent.comments.forEach((comment) => {
 
         const commsElement = document.createElement('div');
         commsElement.classList.add('comment');
@@ -86,7 +97,7 @@ function pullContent(newsContent) {
             <button class="reply-button" id="reply-button-${comment.id}">Відповісти</button>
             <form class="comment-form" style="display: none;">
                 <textarea name="comment" rows="4" cols="50" placeholder="Коментар тут"></textarea><br>
-                <input type="submit" value="Відправити" id="submit" class = "submit-reply">
+                <input type="submit" value="Відправити" id="submit-reply-${comment.id}" class = "submit-reply">
             </form>`;
     
         commentsContainer.appendChild(commsElement);
@@ -96,6 +107,31 @@ function pullContent(newsContent) {
 
         pullResponsesByCommentId(comment.id, commsElement);
         
+    });
+
+    document.addEventListener('click', async function (event) {
+        if (event.target.classList.contains('submit-reply')) {
+            const button = event.target;
+            const form = button.closest('form');
+            const commentFormValue = form.querySelector('textarea').value;
+            const commentId = form.closest('.comment, .response').querySelector('.reply-button').id.split('-')[2];
+
+            const response = await fetch("blog_page/submit_reply", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json;charset=utf-8",
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    reply_content: commentFormValue,
+                    comment_id: commentId
+                }),
+            });
+
+            if (response.status == 400){
+                alert("Ви вже залишали відповідь.")
+            }
+        }
     });
 
     async function pullResponsesByCommentId(commentId, parentElement) {
@@ -114,20 +150,25 @@ function pullContent(newsContent) {
         const data = await response.json();
 
         if (data.success) {
-            const comments = data.comments;
-            for (const comment of comments) {
+            data.responsesWithAuthors.forEach((response) => {
                 const commsElement = document.createElement('div');
                 commsElement.classList.add('response');
                 commsElement.innerHTML = `
-                    <div id="user">${comment.author.username} відповів</div>
-                    <div id="text">${comment.comment}</div>
-                    <button class="reply-button" id = "reply-button" >Відповісти</button><form class="comment-form" style="display: none;">
+                    <div id="user">${response.author.username} відповів</div>
+                    <div id="text">${response.comment_content}</div>
+                    <button class="reply-button" id = "reply-button-${response.id}" >Відповісти</button>
+                    <form class="comment-form" style="display: none;">
                     <textarea name="comment" rows="4" cols="50" placeholder="Коментар тут"></textarea><br>
-                    <input type="submit" value="Відправити" id="submit" class = "submit-reply">
-                </form>`;;
+                    <input type="submit" value="Відправити" id="submit-reply-${response.id}" class = "submit-reply">
+                </form>`;
+
+                const replyButton = commsElement.querySelector(`#reply-button-${response.id}`);
+                replyButton.addEventListener('click', () => toggleForm(commsElement));
                     
                 parentElement.appendChild(commsElement);
-            }
+
+                pullResponsesByCommentId(response.id, commsElement);
+            })
         } else {
             console.error('Ошибка при получении ответов:', data.message);
         }
@@ -138,36 +179,5 @@ function pullContent(newsContent) {
         commentForm.style.display = commentForm.style.display === 'none' ? 'block' : 'none';
     }
 
-    function addReplyEventListeners() {
-        const submitReplyButtons = document.querySelectorAll('.submit-reply');
-        submitReplyButtons.forEach(button => {
-            button.addEventListener('click', async function (event) {
-                event.preventDefault();
-
-                const form = button.closest('form');
-                const commentFormValue = form.querySelector('textarea').value;
-                const commentId = form.closest('.comment, .response').querySelector('.reply-button').id.split('-')[2]; // предположим, что id комментария находится в ID кнопки ответа
-
-                const response = await fetch("blog_page/submit_reply", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json;charset=utf-8",
-                    },
-                    body: JSON.stringify({
-                        userId: userId,
-                        reply_content: commentFormValue,
-                        comment_id: commentId
-                    }),
-                });
-
-                if (response.status == 400){
-                    alert("Ви вже залишали відповідь.")
-                }
-            });
-        });
-    }
-
-    // Добавляем обработчики событий после первичного добавления комментариев в DOM
-    addReplyEventListeners();
 }
 
