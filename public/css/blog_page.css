@@ -72,9 +72,9 @@
 }
 
 .placeholder-news {
-    width: 900px; /* Задайте ширину по вашему усмотрению */
+    width: 900px; 
     padding: 10px;
-    margin-bottom: 20px; /* Добавьте отступ снизу между новостями */
+    margin-bottom: 20px; 
 }
 
 .news-title {
@@ -91,10 +91,10 @@
 }
 
 .news-image {
-    display: block; /* Делаем изображение блочным, чтобы добавить отступы */
+    display: block; 
     margin-top: 15px;
-    margin-bottom: 30px; /* Добавляем отступ снизу для разделения заголовка и изображения */
-    max-width: 100%; /* Автоматический размер изображения в пределах контейнера */
+    margin-bottom: 30px; 
+    max-width: 100%; 
     height: auto;
 }
 
@@ -113,12 +113,12 @@
 
 .comment-form textarea,
 .comment-form input[type="text"]{
-    width: 600px; /* Устанавливаем ширину 100% для всех полей ввода */
-    box-sizing: border-box; /* Учитываем ширину границ и отступов в общей ширине */
-    margin-bottom: 10px; /* Добавляем отступ снизу между полями ввода */
+    width: 600px; 
+    box-sizing: border-box; 
+    margin-bottom: 10px; 
     box-sizing: border-box; 
     margin-bottom: 10px;
-    padding: 10px; /* Добавляем отступ для текста в поле ввода */
+    padding: 10px; 
     border-radius: 24px;
 }
 
@@ -127,9 +127,9 @@
 }
 
 .comment-form input[type="text"]{
-    height: 40px; /* Устанавливаем ширину 100% для всех полей ввода */
-    box-sizing: border-box; /* Учитываем ширину границ и отступов в общей ширине */
-    margin-bottom: 10px; /* Добавляем отступ снизу между полями ввода */
+    height: 40px; 
+    box-sizing: border-box; 
+    margin-bottom: 10px; 
 }
 
 #submit{
@@ -196,17 +196,17 @@
 
 
 .tags-container {
-    margin-top: 20px; /* Отступ сверху для разделения новости и тегов */
+    margin-top: 20px; 
     margin-bottom: 20px;
 }
 
 .tag {
     display: inline-block;
-    background-color: #90ae85; /* Цвет фона тега */
-    color: white; /* Цвет текста тега */
-    padding: 5px 10px; /* Отступы вокруг текста тега */
-    border-radius: 75px; /* Закругление углов */
-    margin-right: 5px; /* Отступ между тегами */
-    cursor: pointer; /* Указатель при наведении для обозначения активности */
+    background-color: #90ae85; 
+    color: white; 
+    padding: 5px 10px; 
+    border-radius: 75px; 
+    margin-right: 5px; 
+    cursor: pointer; 
 }
 
