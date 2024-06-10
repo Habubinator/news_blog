@@ -12,7 +12,7 @@ function getCookie(name) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    fetch(`./news_content`)
+    fetch(window.location.href +`/news_content`)
         .then((response) => response.json())
         .then((data) => {
             if (data.success) {

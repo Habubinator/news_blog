@@ -23,7 +23,7 @@ class NewsController
         
             const newsContent = await db.getNewsPageContent(newsId); 
             const mainImage = await db.getImageById(newsContent.main_image);
-            const newsTags = await db.getNewsTags(id); 
+            const newsTags = await db.getNewsTags(newsId); 
             const author = await db.getUserById(newsContent.author);
             const comments = await db.pullCommentsByNewsId(newsId);
     
@@ -101,7 +101,6 @@ class NewsController
                 const duplicateCheck = await db.commentDublicator(author, newsId);
     
                 if (duplicateCheck.duplicate) {
-                    console.log("Bruh")
                     res.status(201).json({ success: false, message: 'Duplicate comment found' });
                 } else {
                     await db.createCommentByUser({ author, comment_content, news_id });
