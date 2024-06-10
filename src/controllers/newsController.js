@@ -68,6 +68,7 @@ class NewsController
                     author: responseAuthor
                 };
             }));
+            
 
             res.json({ success: true, responsesWithAuthors });
     
