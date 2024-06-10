@@ -19,14 +19,11 @@ class NewsController
     async getNewsPageContent(req, res) {
         try {
 
-            console.log("req.params")
-            const { newsId } = req.params;
-
-            console.log(newsId)
-                
+            const {newsId} = req.params
+        
             const newsContent = await db.getNewsPageContent(newsId); 
             const mainImage = await db.getImageById(newsContent.main_image);
-            const newsTags = await db.getNewsTags(newsId); 
+            const newsTags = await db.getNewsTags(id); 
             const author = await db.getUserById(newsContent.author);
             const comments = await db.pullCommentsByNewsId(newsId);
     
@@ -75,7 +72,7 @@ class NewsController
             res.json({ success: true, responsesWithAuthors });
     
         } catch (error) {
-            console.error('Ошибка при получении ответов:', error);
+            console.error('Помилка при отриманні відповіді:', error);
             res.status(500).json({ success: false, message: 'О-па' });
         }
     }
@@ -84,24 +81,33 @@ class NewsController
     async addComment(req, res){
         try{
 
-            const { userId, comment_content, news_id } = req.body;
+            const { comment_content } = req.body;
 
-            if (!comment_content.trim()) {
-                return res.status(401).json({ success: false, message: 'Comment content is empty' });
+            const {newsId} = req.params
+
+            if (res.locals.isExpired) {
+                return res.status(300).redirect("../");
             }
+            if (res.locals.decoded) {
+                const userId = res.locals.decoded.user.id;
+                console.log(user);
 
-            const author = userId;
-
-            const duplicateCheck = await db.commentDublicator(author, news_id);
-
-            if (duplicateCheck.duplicate) {
-                console.log("Bruh")
-                res.status(201).json({ success: false, message: 'Duplicate comment found' });
-            } else {
-                await db.createCommentByUser({ author, comment_content, news_id });
-                res.status(200).json({ success: true, message: 'Comment added successfully' });
+                if (!comment_content.trim()) {
+                    return res.status(401).json({ success: false, message: 'Comment content is empty' });
+                }
+    
+                const author = userId;
+    
+                const duplicateCheck = await db.commentDublicator(author, newsId);
+    
+                if (duplicateCheck.duplicate) {
+                    console.log("Bruh")
+                    res.status(201).json({ success: false, message: 'Duplicate comment found' });
+                } else {
+                    await db.createCommentByUser({ author, comment_content, news_id });
+                    res.status(200).json({ success: true, message: 'Comment added successfully' });
+                }
             }
-
         } catch (error) {
             console.error('Помилка:', error);
             res.status(500).json({ success: false, message: 'О-па' });
@@ -112,12 +118,21 @@ class NewsController
     async addReply(req, res){
         try{
 
-            const { userId, reply_content, comment_id} = req.body;
+            const { reply_content, comment_id} = req.body;
 
-            const author = userId;
+            if (res.locals.isExpired) {
+                return res.status(300).redirect("../");
+            }
+            if (res.locals.decoded) {
+                const userId = res.locals.decoded.user.id;
+                console.log(user);
+
+                const author = userId;
             
-            await db.createReply({ author, reply_content, comment_id });
-            res.status(200).json({ success: true, message: 'Comment added successfully' });
+                await db.createReply({ author, reply_content, comment_id });
+                res.status(200).json({ success: true, message: 'Comment added successfully' });
+            
+            }
             
 
         } catch (error) {

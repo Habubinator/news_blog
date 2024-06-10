@@ -1,7 +1,5 @@
-//TODO - сделать аутентификацию по jwt
-const userId = 1; //placeholder
+const jwtToken = getCookie("jwt");
 
-// Функция для получения значения куки по имени
 function getCookie(name) {
     let matches = document.cookie.match(
         new RegExp(
@@ -14,12 +12,7 @@ function getCookie(name) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    fetch(window.location.href + `/news_content`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json;charset=utf-8",
-            }
-        })
+    fetch(`./news_content`)
         .then((response) => response.json())
         .then((data) => {
             if (data.success) {
@@ -32,21 +25,17 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch((error) => console.error("Error:", error));
 
-    //TODO - сделать аутентификацию по jwt
-    const userId = 2; //placeholder
-    const news_id = 3; //placeholder
     var submitButton = document.getElementById("submit");
 
     submitButton.addEventListener("click", async function (event) {
-        var commentForm = document.getElementById("commForm").value
+        var commentForm = document.getElementById("commForm").value;
 
-        const response = await fetch("blog_page/submit_comment", {
+        const response = await fetch("./submit_comment", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json;charset=utf-8",
             },
             body: JSON.stringify({
-                userId: userId,
                 comment_content: commentForm,
                 news_id: news_id,
             }),
@@ -64,11 +53,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Проверка наличия JWT токена в куки
-    const jwtToken = getCookie("jwt");
 
     if (jwtToken) {
-        // Выполнение запроса для проверки токена
         fetch("/auth/verify-token", {
             method: "POST",
             headers: {
@@ -160,7 +146,6 @@ function pullContent(newsContent) {
                     "Content-Type": "application/json;charset=utf-8",
                 },
                 body: JSON.stringify({
-                    userId: userId,
                     reply_content: commentFormValue,
                     comment_id: commentId,
                 }),
