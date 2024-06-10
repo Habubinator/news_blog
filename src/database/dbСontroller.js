@@ -10,7 +10,6 @@ class DBController {
         isBanned = false,
         isAdmin = false,
     }) {
-       
         const query = `
         INSERT INTO users (email, username, password, rating, isBanned, isAdmin)
         VALUES ($1, $2, $3, $4, $5, $6)`;
@@ -35,7 +34,7 @@ class DBController {
         const query = `SELECT * FROM users WHERE email = $1`;
         try {
             const result = await db.query(query, [email]);
-            return result.rows[0]; 
+            return result.rows[0];
         } catch (error) {
             console.error(error, query);
             throw error;
@@ -164,11 +163,7 @@ class DBController {
         }
     }
 
-    async createCommentByUser({
-        author,
-        comment_content,
-        news_id,
-    }) {
+    async createCommentByUser({ author, comment_content, news_id }) {
         const query = `
         INSERT INTO comments (author, comment_content, reply_to_comment, news_id)
         VALUES ($1, $2, $3, $4)`;
@@ -179,8 +174,8 @@ class DBController {
                 null,
                 news_id,
             ]);
-            console.log(author)
-            console.log(result)
+            console.log(author);
+            console.log(result);
             return result.rows;
         } catch (error) {
             console.log(error, query);
@@ -188,11 +183,7 @@ class DBController {
         }
     }
 
-    async createReply({
-        author,
-        reply_content,
-        comment_id,
-    }) {
+    async createReply({ author, reply_content, comment_id }) {
         const query = `
         INSERT INTO comments (author, comment_content, reply_to_comment, news_id)
         VALUES ($1, $2, $3, $4)`;
@@ -203,8 +194,8 @@ class DBController {
                 comment_id,
                 null,
             ]);
-            console.log(author)
-            console.log(result)
+            console.log(author);
+            console.log(result);
             return result.rows;
         } catch (error) {
             console.log(error, query);
@@ -218,10 +209,13 @@ class DBController {
             const result = await db.query(query, [author_id, news_id]);
             if (result.rows.length > 0) {
                 // Если есть совпадения, возвращаем позитивный результат
-                return { duplicate: true, message: 'Duplicate comment found' };
+                return { duplicate: true, message: "Duplicate comment found" };
             } else {
                 // Если нет совпадений, возвращаем негативный результат
-                return { duplicate: false, message: 'No duplicate comments found' };
+                return {
+                    duplicate: false,
+                    message: "No duplicate comments found",
+                };
             }
         } catch (error) {
             console.log(error, query);
@@ -229,12 +223,11 @@ class DBController {
         }
     }
 
-    //pulling comments 
-    async pullCommentsById(id){
+    //pulling comments
+    async pullCommentsById(id) {
         const query = `SELECT * FROM comments WHERE id = $1`;
         try {
             const result = await db.query(query, [id]);
-
 
             return result.rows;
         } catch (error) {
@@ -243,8 +236,8 @@ class DBController {
         }
     }
 
-    //pulling comments 
-    async pullCommentsByNewsId(id){
+    //pulling comments
+    async pullCommentsByNewsId(id) {
         const query = `SELECT * FROM comments WHERE news_id = $1`;
         try {
             const result = await db.query(query, [id]);
@@ -256,8 +249,8 @@ class DBController {
         }
     }
 
-    //pulling comments 
-    async pullResponses(id){
+    //pulling comments
+    async pullResponses(id) {
         const query = `SELECT * FROM comments WHERE reply_to_comment = $1;`;
         try {
             const result = await db.query(query, [id]);
@@ -268,7 +261,7 @@ class DBController {
             throw error;
         }
     }
-    
+
     // Delete a comment
     async deleteComment(id) {
         const query = `DELETE FROM comments WHERE id = $1`;
@@ -363,11 +356,10 @@ class DBController {
         news_content,
     }) {
         const query = `
-        INSERT INTO news (id, title, small_desc, main_image, author, news_content)
-        VALUES ($1, $2, $3, $4, $5, $6)`;
+        INSERT INTO news (title, small_desc, main_image, author, news_content)
+        VALUES ($1, $2, $3, $4, $5)`;
         try {
             const result = await db.query(query, [
-                id,
                 title,
                 small_desc,
                 main_image,
@@ -380,17 +372,25 @@ class DBController {
             throw error;
         }
     }
+    async getNews() {
+        const query = "SELECT * FROM news";
+        try {
+            const result = await db.query(query);
+            return result.rows;
+        } catch (error) {
+            console.error("Ошибка:", error);
+            throw error;
+        }
+    }
 
     async getNewsPageContent(id) {
-        const query = 'SELECT * FROM news WHERE id = $1;';
+        const query = "SELECT * FROM news WHERE id = $1;";
         try {
-
             const result = await db.query(query, [id]);
-            
+
             return result.rows[0];
-            
         } catch (error) {
-            console.error('Ошибка:', error);
+            console.error("Ошибка:", error);
             throw error;
         }
     }
