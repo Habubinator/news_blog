@@ -99,3 +99,7 @@
 .category-item {
     background-color: #f0edd2;
 }
+
+input[type="button"] {
+    cursor: pointer;
+}

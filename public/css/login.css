@@ -65,3 +65,7 @@ button {
 #mainBodySection {
     height: 64vh;
 }
+
+input[type="button"] {
+    cursor: pointer;
+}

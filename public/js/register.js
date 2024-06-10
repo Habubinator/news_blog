@@ -19,13 +19,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 passwordRep: passwordRepInput,
             }),
         });
-        
+
         if (response.status === 200) {
-            alert("Реєстрація успішна!");
-            // TODO - Save jwt token to cookies
-            // Then Reditect
+            const data = await response.json();
+            document.cookie = `jwt=${data.data.accessToken}; path=/`;
             window.location.href = "/";
-        } else if (response.status === 405) {
+        } else if (response.status === 400) {
             alert("Заповніть всі поля.");
         } else if (response.status === 401) {
             alert("Паролі не співпадають.");

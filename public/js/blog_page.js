@@ -1,29 +1,39 @@
+//TODO - сделать аутентификацию по jwt
 const userId = 1; //placeholder
 
+// Функция для получения значения куки по имени
+function getCookie(name) {
+    let matches = document.cookie.match(
+        new RegExp(
+            "(?:^|; )" +
+                name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+                "=([^;]*)"
+        )
+    );
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
+    fetch(`/news/blog_page/news_content`)
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                const newsContent = data;
 
-   fetch(`/news/blog_page/news_content`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
+                pullContent(newsContent);
+            } else {
+                console.error("Error:", data.message);
+            }
+        })
+        .catch((error) => console.error("Error:", error));
 
-                        const newsContent = data;
-                        
-                        pullContent(newsContent); 
-                    } else {
-                        console.error('Error:', data.message);
-                    }
-                })
-        .catch(error => console.error('Error:', error)); 
-
-
+    //TODO - сделать аутентификацию по jwt
     const userId = 2; //placeholder
     const news_id = 3; //placeholder
-    var submitButton = document.getElementById('submit');
+    var submitButton = document.getElementById("submit");
 
     submitButton.addEventListener("click", async function (event) {
-
-        var commentForm = document.getElementById('commForm').value;
+        var commentForm = document.getElementById("commForm").value;
 
         const response = await fetch("blog_page/submit_comment", {
             method: "POST",
@@ -33,63 +43,83 @@ document.addEventListener("DOMContentLoaded", function () {
             body: JSON.stringify({
                 userId: userId,
                 comment_content: commentForm,
-                news_id: news_id
+                news_id: news_id,
             }),
         });
 
-        if (response.status == 200){
-            alert("Дякую за коментар.")
-        }
-        else if (response.status == 201){
+        if (response.status == 200) {
+            alert("Дякую за коментар.");
+        } else if (response.status == 201) {
             event.preventDefault();
-            alert("Ви вже залишали коментар.")
+            alert("Ви вже залишали коментар.");
             event.preventDefault();
-        }
-        else if (response.status == 401){
-            alert("Напишіть коментар.")
+        } else if (response.status == 401) {
+            alert("Напишіть коментар.");
             event.preventDefault();
         }
     });
+
+    // Проверка наличия JWT токена в куки
+    const jwtToken = getCookie("jwt");
+
+    if (jwtToken) {
+        // Выполнение запроса для проверки токена
+        fetch("/auth/verify-token", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json;charset=utf-8",
+                Authorization: `Bearer ${jwtToken}`,
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    // TODO - отгрузить при успешной авторизации
+                } else {
+                    // TODO - отгрузить при провальной авторизации
+                }
+            })
+            .catch((error) => {
+                console.error("Ошибка проверки токена:", error);
+            });
+    }
 });
 
 function pullContent(newsContent) {
-
-    const titleContainer = document.getElementById('news-title');
+    const titleContainer = document.getElementById("news-title");
     titleContainer.innerHTML = newsContent.responseContent.title;
 
-    const authorContainer = document.getElementById('news_author');
-    authorContainer.innerHTML = "Author: " + newsContent.responseContent.author.username;
+    const authorContainer = document.getElementById("news_author");
+    authorContainer.innerHTML =
+        "Author: " + newsContent.responseContent.author.username;
 
-    const mainImageContainer = document.getElementById('main_image');
-    const imgElement = document.createElement('img');
+    const mainImageContainer = document.getElementById("main_image");
+    const imgElement = document.createElement("img");
     imgElement.src = newsContent.responseContent.mainImage.image_href;
 
     mainImageContainer.appendChild(imgElement);
-    
-    const contentContainer = document.getElementById('news_content');
+
+    const contentContainer = document.getElementById("news_content");
     contentContainer.innerHTML = newsContent.responseContent.news_content;
 
-
-    const tagsContainer = document.getElementById('tags-container'); 
+    const tagsContainer = document.getElementById("tags-container");
     console.log(tagsContainer);
 
-    newsContent.responseContent.tags.forEach(tag_name => {
-        
-        const tagsElement = document.createElement('div');
+    newsContent.responseContent.tags.forEach((tag_name) => {
+        const tagsElement = document.createElement("div");
         tagsElement.innerHTML = tag_name.tag_name;
 
-        tagsElement.classList.add("tag")
+        tagsElement.classList.add("tag");
 
-        tagsContainer.appendChild(tagsElement)
+        tagsContainer.appendChild(tagsElement);
     });
 
-    const commentsContainer = document.getElementById('comments'); 
+    const commentsContainer = document.getElementById("comments");
 
     newsContent.responseContent.comments.forEach((comment) => {
+        const commsElement = document.createElement("div");
+        commsElement.classList.add("comment");
 
-        const commsElement = document.createElement('div');
-        commsElement.classList.add('comment');
-    
         commsElement.innerHTML = `
             <div id="user">${comment.author.username}</div>
             <div id="text">${comment.comment_content}</div>
@@ -98,22 +128,26 @@ function pullContent(newsContent) {
                 <textarea name="comment" rows="4" cols="50" placeholder="Коментар тут"></textarea><br>
                 <input type="submit" value="Відправити" id="submit-reply-${comment.id}" class = "submit-reply">
             </form>`;
-    
+
         commentsContainer.appendChild(commsElement);
-    
-        const replyButton = commsElement.querySelector(`#reply-button-${comment.id}`);
-        replyButton.addEventListener('click', () => toggleForm(commsElement));
+
+        const replyButton = commsElement.querySelector(
+            `#reply-button-${comment.id}`
+        );
+        replyButton.addEventListener("click", () => toggleForm(commsElement));
 
         pullResponsesByCommentId(comment.id, commsElement);
-        
     });
 
-    document.addEventListener('click', async function (event) {
-        if (event.target.classList.contains('submit-reply')) {
+    document.addEventListener("click", async function (event) {
+        if (event.target.classList.contains("submit-reply")) {
             const button = event.target;
-            const form = button.closest('form');
-            const commentFormValue = form.querySelector('textarea').value;
-            const commentId = form.closest('.comment, .response').querySelector('.reply-button').id.split('-')[2];
+            const form = button.closest("form");
+            const commentFormValue = form.querySelector("textarea").value;
+            const commentId = form
+                .closest(".comment, .response")
+                .querySelector(".reply-button")
+                .id.split("-")[2];
 
             const response = await fetch("blog_page/submit_reply", {
                 method: "POST",
@@ -123,12 +157,12 @@ function pullContent(newsContent) {
                 body: JSON.stringify({
                     userId: userId,
                     reply_content: commentFormValue,
-                    comment_id: commentId
+                    comment_id: commentId,
                 }),
             });
 
-            if (response.status == 400){
-                alert("Ви вже залишали відповідь.")
+            if (response.status == 400) {
+                alert("Ви вже залишали відповідь.");
             }
         }
     });
@@ -140,18 +174,16 @@ function pullContent(newsContent) {
                 "Content-Type": "application/json;charset=utf-8",
             },
             body: JSON.stringify({
-                commentId: commentId
+                commentId: commentId,
             }),
-            
         });
-
 
         const data = await response.json();
 
         if (data.success) {
             data.responsesWithAuthors.forEach((response) => {
-                const commsElement = document.createElement('div');
-                commsElement.classList.add('response');
+                const commsElement = document.createElement("div");
+                commsElement.classList.add("response");
                 commsElement.innerHTML = `
                     <div id="user">${response.author.username} відповів</div>
                     <div id="text">${response.comment_content}</div>
@@ -161,22 +193,25 @@ function pullContent(newsContent) {
                     <input type="submit" value="Відправити" id="submit-reply-${response.id}" class = "submit-reply">
                 </form>`;
 
-                const replyButton = commsElement.querySelector(`#reply-button-${response.id}`);
-                replyButton.addEventListener('click', () => toggleForm(commsElement));
-                    
+                const replyButton = commsElement.querySelector(
+                    `#reply-button-${response.id}`
+                );
+                replyButton.addEventListener("click", () =>
+                    toggleForm(commsElement)
+                );
+
                 parentElement.appendChild(commsElement);
 
                 pullResponsesByCommentId(response.id, commsElement);
-            })
+            });
         } else {
-            console.error('Ошибка при получении ответов:', data.message);
+            console.error("Ошибка при получении ответов:", data.message);
         }
     }
 
     function toggleForm(commsElement) {
-        const commentForm = commsElement.querySelector('.comment-form');
-        commentForm.style.display = commentForm.style.display === 'none' ? 'block' : 'none';
+        const commentForm = commsElement.querySelector(".comment-form");
+        commentForm.style.display =
+            commentForm.style.display === "none" ? "block" : "none";
     }
-
 }
-

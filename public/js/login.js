@@ -15,11 +15,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 password: passwordInput,
             }),
         });
-        
+
         if (response.status === 200) {
-            alert("Логін успішний!");
-            // TODO - Save jwt token to cookies
-            // Then Reditect
+            const data = await response.json();
+            document.cookie = `jwt=${data.data.accessToken}; path=/`;
             window.location.href = "/";
         } else if (response.status === 400) {
             alert("Неправильний логін або пароль.");

@@ -71,49 +71,77 @@ class AuthController {
         try {
             const { email, login, password, passwordRep } = req.body;
 
-            if(!email.trim() || !login.trim() || !password.trim() || !passwordRep.trim()) {
-                return res.status(405).json({
+            if (
+                !email.trim() ||
+                !login.trim() ||
+                !password.trim() ||
+                !passwordRep.trim()
+            ) {
+                return res.status(400).json({
                     success: false,
                     error: "Заповніть всі поля",
                 });
-            }
-            else if (password !== passwordRep) {
+            } else if (password !== passwordRep) {
                 return res.status(401).json({
                     success: false,
                     error: "Паролі не співпадають",
                 });
-            }
-            else if (!email.includes("@"))
-                {
-                    return res.status(402).json({
+            } else if (!email.includes("@")) {
+                return res.status(402).json({
+                    success: false,
+                    error: "Е-мейл повинен мати @",
+                });
+            } else {
+                const emailChecker = await db.findUserByEmail(email);
+                if (emailChecker) {
+                    return res.status(403).json({
                         success: false,
-                        error: "Е-мейл повинен мати @",
+                        error: "Користувач з таким емейлом вже існує у системі",
                     });
                 }
-            else{
-                const emailChecker = await db.findUserByEmail(email);
-                if(emailChecker)
-                    {
-                        return res.status(403).json({
-                            success: false,
-                            error: "Користувач з таким емейлом вже існує у системі",
-                        });
-                    }
-                }
-    
+            }
+
             const user = await db.createUser({
                 email,
                 username: login,
                 password,
             });
-    
-            res.status(200).json({ success: true, message: "Реєстрація успішна!", user });
+
+            const accessToken = generateAccessToken(user);
+            res.status(200).json({
+                success: true,
+                data: {
+                    user,
+                    accessToken: accessToken,
+                },
+            });
         } catch (error) {
             console.error("Error in register controller:", error);
-            return res.status(500).json({ success: false, message: `Server error: ${error.message}` });
+            return res.status(500).json({
+                success: false,
+                message: `Server error: ${error.message}`,
+            });
         }
     }
-    
+
+    async verifyToken(req, res) {
+        try {
+            if (res.locals.decoded) {
+                return res.status(200).json({
+                    success: true,
+                });
+            }
+            return res.status(403).json({
+                success: false,
+            });
+        } catch (error) {
+            console.error("Error in register controller:", error);
+            return res.status(500).json({
+                success: false,
+                message: `Server error: ${error.message}`,
+            });
+        }
+    }
 }
 
 function generateAccessToken(user) {
