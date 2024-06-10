@@ -91,7 +91,6 @@ class NewsController
             }
             if (res.locals.decoded) {
                 const userId = res.locals.decoded.user.id;
-                console.log(user);
 
                 if (!comment_content.trim()) {
                     return res.status(401).json({ success: false, message: 'Comment content is empty' });
@@ -125,12 +124,15 @@ class NewsController
             }
             if (res.locals.decoded) {
                 const userId = res.locals.decoded.user.id;
-                console.log(user);
 
                 const author = userId;
+
+                if (!reply_content.trim()) {
+                    return res.status(401).json({ success: false, message: 'Reply content is empty' });
+                }
             
                 await db.createReply({ author, reply_content, comment_id });
-                res.status(200).json({ success: true, message: 'Comment added successfully' });
+                res.status(200).json({ success: true, message: 'Reply added successfully' });
             
             }
             

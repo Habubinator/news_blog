@@ -154,6 +154,9 @@ function pullContent(newsContent) {
             if (response.status == 400) {
                 alert("Ви вже залишали відповідь.");
             }
+            else if(response.status == 401){
+                alert("Ви вже залишали відповідь.");
+            }
         }
     });
 
