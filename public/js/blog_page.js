@@ -14,7 +14,12 @@ function getCookie(name) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    fetch(`/news/blog_page/news_content`)
+    fetch(window.location.href + `/news_content`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json;charset=utf-8",
+            }
+        })
         .then((response) => response.json())
         .then((data) => {
             if (data.success) {
@@ -33,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var submitButton = document.getElementById("submit");
 
     submitButton.addEventListener("click", async function (event) {
-        var commentForm = document.getElementById("commForm").value;
+        var commentForm = document.getElementById("commForm").value
 
         const response = await fetch("blog_page/submit_comment", {
             method: "POST",

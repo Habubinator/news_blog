@@ -18,13 +18,17 @@ class NewsController
 
     async getNewsPageContent(req, res) {
         try {
-            const id = 3; // test
-    
-            const newsContent = await db.getNewsPageContent(id); 
+
+            console.log("req.params")
+            const { newsId } = req.params;
+
+            console.log(newsId)
+                
+            const newsContent = await db.getNewsPageContent(newsId); 
             const mainImage = await db.getImageById(newsContent.main_image);
-            const newsTags = await db.getNewsTags(id); 
+            const newsTags = await db.getNewsTags(newsId); 
             const author = await db.getUserById(newsContent.author);
-            const comments = await db.pullCommentsByNewsId(id);
+            const comments = await db.pullCommentsByNewsId(newsId);
     
             const commentsWithAuthors = await Promise.all(comments.map(async (comment) => {
                 const commentAuthor = await db.getUserById(comment.author);
