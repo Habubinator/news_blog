@@ -10,6 +10,17 @@ function getCookie(name) {
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
+// Функция для удаления куки по имени
+function deleteCookie(name) {
+    document.cookie = name + "=; Max-Age=-99999999;";
+}
+
+// Функция для удаления JWT куки и обновления страницы
+function deleteJwtAndRefresh() {
+    deleteCookie("jwt");
+    window.location.reload();
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     var toggles = document.querySelectorAll(".category-toggle");
 
@@ -43,23 +54,46 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((data) => {
                 if (data.success) {
                     // TODO - отгрузить при успешной авторизации
+                    const button = document.getElementById("login");
+                    button.value = "Вийти";
+                    button.onclick = () => {
+                        deleteJwtAndRefresh();
+                    };
                 } else {
                     // TODO - отгрузить при провальной авторизации
+                    const button = document.getElementById("login");
+                    button.onclick = () => {
+                        window.location.href = "/auth/login";
+                    };
                 }
             })
             .catch((error) => {
                 console.error("Ошибка проверки токена:", error);
             });
     } else {
-        alert("Пожалуйста, войдите в систему");
+        const button = document.getElementById("login");
+        button.onclick = () => {
+            window.location.href = "/auth/login";
+        };
     }
 
     const newsContainer = document.getElementById("news");
 
-    // Функция для получения новостей
-    async function fetchNews() {
+    // Функция для получения новостей по тегу
+    async function fetchNews(tagId = null) {
         try {
-            const response = await fetch("/api/content");
+            const url = tagId ? `/api/contentByTagId` : `/api/content`;
+            const options = tagId
+                ? {
+                      method: "POST",
+                      headers: {
+                          "Content-Type": "application/json;charset=utf-8",
+                      },
+                      body: JSON.stringify({ tagId: tagId }),
+                  }
+                : {};
+
+            const response = await fetch(url, options);
             const result = await response.json();
 
             if (result.success && Array.isArray(result.data)) {
@@ -119,6 +153,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 topTags.forEach((tag) => {
                     const tagDiv = document.createElement("div");
                     tagDiv.innerHTML = `<p>${tag.tag_name} <em id="newsEm">${tag.news_count}</em></p>`;
+                    tagDiv.addEventListener("click", () => {
+                        fetchNews(tag.tag_id);
+                    });
                     tagsDiv.appendChild(tagDiv);
                 });
             }

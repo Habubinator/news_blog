@@ -374,9 +374,40 @@ class DBController {
     }
 
     async getNews() {
-        const query = "SELECT * FROM news";
+        const query = "SELECT * FROM news ORDER BY news.id DESC";
         try {
             const result = await db.query(query);
+            return result.rows;
+        } catch (error) {
+            console.error("Ошибка:", error);
+            throw error;
+        }
+    }
+
+    async getNewsByTag(tagId) {
+        const query = `
+        SELECT 
+            news.id,
+            news.title,
+            news.small_desc,
+            images.image_href AS main_image_href,
+            news.author,
+            news.news_content
+        FROM 
+            news
+        JOIN 
+            news_tags ON news.id = news_tags.news_id
+        JOIN 
+            tags ON news_tags.tag_id = tags.id
+        JOIN 
+            images ON news.main_image = images.id
+        WHERE 
+            tags.id = $1
+        ORDER BY news.id DESC
+
+    `;
+        try {
+            const result = await db.query(query, [tagId]);
             return result.rows;
         } catch (error) {
             console.error("Ошибка:", error);
@@ -397,6 +428,7 @@ class DBController {
             news
         JOIN 
             images ON news.main_image = images.id
+        ORDER BY news.id DESC
     `;
         try {
             const result = await db.query(query);
@@ -459,13 +491,19 @@ class DBController {
         }
     }
 
-    // Count the number of news articles for each tag
     async countTagsOfNews() {
         const query = `
-        SELECT tags.tag_name, COUNT(news_tags.news_id) as news_count
-        FROM tags
-        JOIN news_tags ON tags.id = news_tags.tag_id
-        GROUP BY tags.tag_name`;
+        SELECT 
+            tags.id AS tag_id, 
+            tags.tag_name, 
+            COUNT(news_tags.news_id) AS news_count
+        FROM 
+            tags
+        JOIN 
+            news_tags ON tags.id = news_tags.tag_id
+        GROUP BY 
+            tags.id, tags.tag_name
+    `;
         try {
             const result = await db.query(query);
             return result.rows;
