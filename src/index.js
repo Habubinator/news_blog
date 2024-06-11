@@ -10,6 +10,7 @@ const checkToken = require("./middlewares/jwt.js");
 const authRouter = require("./routes/authRouter.js");
 const newsRouter = require("./routes/newsRouter.js");
 const adminRouter = require("./routes/adminRouter.js");
+const apiRouter = require("./routes/apiRouter.js");
 
 app.options("*", cors());
 app.use(express.json());
@@ -19,6 +20,7 @@ app.use(checkToken);
 app.use("/auth", authRouter);
 app.use("/news", newsRouter);
 app.use("/admin", adminRouter);
+app.use("/api", apiRouter);
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(process.cwd(), "public", "html", "main_page.html"));

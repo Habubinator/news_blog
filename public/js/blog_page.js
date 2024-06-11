@@ -12,7 +12,7 @@ function getCookie(name) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    fetch(window.location.href +`/news_content`)
+    fetch(window.location.href + `/news_content`)
         .then((response) => response.json())
         .then((data) => {
             if (data.success) {
@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
         }
     });
-
 
     if (jwtToken) {
         fetch("/auth/verify-token", {
@@ -153,8 +152,7 @@ function pullContent(newsContent) {
 
             if (response.status == 400) {
                 alert("Ви вже залишали відповідь.");
-            }
-            else if(response.status == 401){
+            } else if (response.status == 401) {
                 alert("Ви вже залишали відповідь.");
             }
         }

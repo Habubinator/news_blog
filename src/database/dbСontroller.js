@@ -372,8 +372,32 @@ class DBController {
             throw error;
         }
     }
+
     async getNews() {
         const query = "SELECT * FROM news";
+        try {
+            const result = await db.query(query);
+            return result.rows;
+        } catch (error) {
+            console.error("Ошибка:", error);
+            throw error;
+        }
+    }
+
+    async getNewsWithImages() {
+        const query = `
+        SELECT 
+            news.id,
+            news.title,
+            news.small_desc,
+            images.image_href AS main_image_href,
+            news.author,
+            news.news_content
+        FROM 
+            news
+        JOIN 
+            images ON news.main_image = images.id
+    `;
         try {
             const result = await db.query(query);
             return result.rows;
